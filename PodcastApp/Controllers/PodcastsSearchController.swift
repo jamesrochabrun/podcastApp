@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Alamofire
 
 class PodcastsSearchController: UITableViewController {
     
@@ -56,9 +57,29 @@ class PodcastsSearchController: UITableViewController {
 extension PodcastsSearchController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("\(searchText)")
+        
+        let url = Itunes.search(term: searchText, media: ItunesMedia.podcast(entity: PodcastEntity.podcast, attribute: PodcastAttribute.keywordsTerm))
+        
+        
+        Alamofire.request("\(url)").responseData { (dataResponse) in
+            
+            if let error = dataResponse.error {
+                print("Failed to connect")
+                return
+            }
+            guard let data = dataResponse.data else { return }
+            
+            let dummyString = String(data: data, encoding: .utf8)
+            print("\(dummyString)")
+        }
     }
 }
+
+
+
+
+
+
 
 
 
