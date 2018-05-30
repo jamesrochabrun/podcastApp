@@ -27,10 +27,10 @@ class MainTabBarController: UITabBarController {
     // MARK:- Set up Functions
     fileprivate func setNavControllers() {
         
+        let searchNavController = generateNavController(root: PodcastsSearchController(), title: "Search", image: #imageLiteral(resourceName: "search"))
         let favNavController = generateNavController(root: FavController(), title: "Favorites", image: #imageLiteral(resourceName: "favorites"))
-        let searchNavController = generateNavController(root: SearchController(), title: "Search", image: #imageLiteral(resourceName: "search"))
         let downloadNavController = generateNavController(root: DownloadController(), title: "Download", image: #imageLiteral(resourceName: "downloads"))
-        viewControllers = [favNavController, searchNavController, downloadNavController]
+        viewControllers = [searchNavController, favNavController, downloadNavController]
     }
     
     // MARK:- Helper Functions
@@ -42,7 +42,6 @@ class MainTabBarController: UITabBarController {
         navController.tabBarItem.image = image
         return navController
     }
-    
 }
 
 

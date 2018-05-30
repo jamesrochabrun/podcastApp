@@ -15,8 +15,12 @@
 		09BD725320BE5AE40011FEC8 /* PodcastAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD725220BE5AE40011FEC8 /* PodcastAppTests.swift */; };
 		09BD725E20BE5D210011FEC8 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD725D20BE5D210011FEC8 /* MainTabBarController.swift */; };
 		09BD726020BE5E0E0011FEC8 /* FavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD725F20BE5E0E0011FEC8 /* FavController.swift */; };
-		09BD726220BE5EB70011FEC8 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726120BE5EB70011FEC8 /* SearchController.swift */; };
+		09BD726220BE5EB70011FEC8 /* PodcastsSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726120BE5EB70011FEC8 /* PodcastsSearchController.swift */; };
 		09BD726420BE5FEE0011FEC8 /* DownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726320BE5FEE0011FEC8 /* DownloadController.swift */; };
+		09BD726820BE64CB0011FEC8 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726720BE64CB0011FEC8 /* Podcast.swift */; };
+		09BD726B20BE659F0011FEC8 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726A20BE659F0011FEC8 /* Reusable.swift */; };
+		09BD726D20BE66FC0011FEC8 /* GenericDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726C20BE66FC0011FEC8 /* GenericDataSource.swift */; };
+		09BD727020BE6CB60011FEC8 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD726F20BE6CB60011FEC8 /* PodcastCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,8 +46,12 @@
 		09BD725420BE5AE40011FEC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09BD725D20BE5D210011FEC8 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		09BD725F20BE5E0E0011FEC8 /* FavController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavController.swift; sourceTree = "<group>"; };
-		09BD726120BE5EB70011FEC8 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		09BD726120BE5EB70011FEC8 /* PodcastsSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsSearchController.swift; sourceTree = "<group>"; };
 		09BD726320BE5FEE0011FEC8 /* DownloadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadController.swift; sourceTree = "<group>"; };
+		09BD726720BE64CB0011FEC8 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
+		09BD726A20BE659F0011FEC8 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		09BD726C20BE66FC0011FEC8 /* GenericDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericDataSource.swift; sourceTree = "<group>"; };
+		09BD726F20BE6CB60011FEC8 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,10 +94,10 @@
 			isa = PBXGroup;
 			children = (
 				09BD723A20BE5AE40011FEC8 /* AppDelegate.swift */,
-				09BD725D20BE5D210011FEC8 /* MainTabBarController.swift */,
-				09BD725F20BE5E0E0011FEC8 /* FavController.swift */,
-				09BD726120BE5EB70011FEC8 /* SearchController.swift */,
-				09BD726320BE5FEE0011FEC8 /* DownloadController.swift */,
+				09BD726920BE65930011FEC8 /* protocols */,
+				09BD726620BE64B80011FEC8 /* Model */,
+				09BD726E20BE6CA60011FEC8 /* View */,
+				09BD726520BE63D50011FEC8 /* Controllers */,
 				09BD723E20BE5AE40011FEC8 /* Main.storyboard */,
 				09BD724420BE5AE40011FEC8 /* Assets.xcassets */,
 				09BD724620BE5AE40011FEC8 /* LaunchScreen.storyboard */,
@@ -106,6 +114,42 @@
 				09BD725420BE5AE40011FEC8 /* Info.plist */,
 			);
 			path = PodcastAppTests;
+			sourceTree = "<group>";
+		};
+		09BD726520BE63D50011FEC8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				09BD725D20BE5D210011FEC8 /* MainTabBarController.swift */,
+				09BD726120BE5EB70011FEC8 /* PodcastsSearchController.swift */,
+				09BD725F20BE5E0E0011FEC8 /* FavController.swift */,
+				09BD726320BE5FEE0011FEC8 /* DownloadController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		09BD726620BE64B80011FEC8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				09BD726720BE64CB0011FEC8 /* Podcast.swift */,
+				09BD726C20BE66FC0011FEC8 /* GenericDataSource.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		09BD726920BE65930011FEC8 /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				09BD726A20BE659F0011FEC8 /* Reusable.swift */,
+			);
+			path = protocols;
+			sourceTree = "<group>";
+		};
+		09BD726E20BE6CA60011FEC8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				09BD726F20BE6CB60011FEC8 /* PodcastCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,11 +256,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				09BD724320BE5AE40011FEC8 /* PodcastApp.xcdatamodeld in Sources */,
-				09BD726220BE5EB70011FEC8 /* SearchController.swift in Sources */,
+				09BD726820BE64CB0011FEC8 /* Podcast.swift in Sources */,
+				09BD727020BE6CB60011FEC8 /* PodcastCell.swift in Sources */,
+				09BD726220BE5EB70011FEC8 /* PodcastsSearchController.swift in Sources */,
 				09BD725E20BE5D210011FEC8 /* MainTabBarController.swift in Sources */,
+				09BD726B20BE659F0011FEC8 /* Reusable.swift in Sources */,
 				09BD726420BE5FEE0011FEC8 /* DownloadController.swift in Sources */,
 				09BD723B20BE5AE40011FEC8 /* AppDelegate.swift in Sources */,
 				09BD726020BE5E0E0011FEC8 /* FavController.swift in Sources */,
+				09BD726D20BE66FC0011FEC8 /* GenericDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
