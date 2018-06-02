@@ -11,10 +11,17 @@ import UIKit
 
 class PodcastCell: UITableViewCell {
     
+    @IBOutlet weak var trackNameLabel: UILabel!
+    @IBOutlet weak var podcastLabel: UILabel!
+    @IBOutlet weak var podcastCountLabel: UILabel!
+    @IBOutlet weak var podcastImageView: UIImageView!
+    
+    
     func configure(viewModel: PodcastViewModel) {
-        self.textLabel?.text = "\(viewModel.artistDisplayName)\n\(viewModel.displayName)"
-        self.textLabel?.numberOfLines = -1 //inifinite number of lines
-        self.imageView?.image = #imageLiteral(resourceName: "appicon")
+        
+        trackNameLabel.text = viewModel.displayName
+        podcastLabel.text = viewModel.artistDisplayName
+        self.podcastImageView.image = #imageLiteral(resourceName: "appicon")
     }
 }
 

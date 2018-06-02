@@ -22,12 +22,15 @@ class PodcastsSearchController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSearchBar()
-        self.tableView.register(PodcastCell.self)
+        setUpTableView()
     }
     
     // MARK:- Set Up UI
+    private func setUpTableView() {
+        self.tableView.registerNib(PodcastCell.self)
+    }
+    
     private func setUpSearchBar() {
-        
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.dimsBackgroundDuringPresentation = false
@@ -51,6 +54,13 @@ extension PodcastsSearchController: UISearchBarDelegate {
             self.setUpDataSource(with: podcasts)
             self.tableView.reloadData()
         }
+    }
+}
+
+// MARK:- UITableViewDelegate
+extension PodcastsSearchController {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 132.0
     }
 }
 
