@@ -12,16 +12,6 @@ import Alamofire
 
 class PodcastsSearchController: UITableViewController {
     
-    let podcasts = [
-        
-        Podcast(name: "1", artistName: "a"),
-        Podcast(name: "2", artistName: "b"),
-        Podcast(name: "3", artistName: "c"),
-        Podcast(name: "4", artistName: "d"),
-        Podcast(name: "5", artistName: "e"),
-        Podcast(name: "6", artistName: "f")
-    ]
-    
     // MARK:- UI
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -32,7 +22,7 @@ class PodcastsSearchController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSearchBar()
-        setUpTableView()
+        self.tableView.register(PodcastCell.self)
     }
     
     // MARK:- Set Up UI
@@ -44,9 +34,8 @@ class PodcastsSearchController: UITableViewController {
         searchController.searchBar.delegate = self
     }
     
-    private func setUpTableView() {
-        self.tableView.register(PodcastCell.self)
-        tableDataSource = GenericTableDataSource(models: podcasts.map { PodcastViewModel(podcast: $0) }) { cell, model in
+    private func setUpDataSource(with models: [Podcast]) {
+        tableDataSource = GenericTableDataSource(models: models.map { PodcastViewModel(podcast: $0) }) { cell, model in
             cell.configure(viewModel: model)
             return cell
         }
@@ -54,26 +43,17 @@ class PodcastsSearchController: UITableViewController {
     }
 }
 
+// MARK:- Search
 extension PodcastsSearchController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        let url = Itunes.search(term: searchText, media: ItunesMedia.podcast(entity: PodcastEntity.podcast, attribute: PodcastAttribute.keywordsTerm))
-        
-        
-        Alamofire.request("\(url)").responseData { (dataResponse) in
-            
-            if let error = dataResponse.error {
-                print("Failed to connect")
-                return
-            }
-            guard let data = dataResponse.data else { return }
-            
-            let dummyString = String(data: data, encoding: .utf8)
-            print("\(dummyString)")
+        APIService.shared.fetchPodcasts(searchText: searchText) { (podcasts) in
+            self.setUpDataSource(with: podcasts)
+            self.tableView.reloadData()
         }
     }
 }
+
 
 
 

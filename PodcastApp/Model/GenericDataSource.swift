@@ -12,7 +12,7 @@ import UIKit
 /// This class is a simple, immutable, declarative data source for UITableView
 final class GenericTableDataSource<V, T> : NSObject, UITableViewDataSource where V: UITableViewCell {
     
-    private let models: [T]
+    private var models: [T]
     private let configureCell: CellConfiguration
     typealias CellConfiguration = (V, T) -> V
     
@@ -29,6 +29,11 @@ final class GenericTableDataSource<V, T> : NSObject, UITableViewDataSource where
         let cell: V = tableView.dequeueReusableCell(forIndexPath: indexPath)
         let model = models[indexPath.row]
         return configureCell(cell, model)
+    }
+    
+    /// MARK: updates for search
+    func update(models: [T]) {
+        self.models = models
     }
 }
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0958C54B20C23C07009E5F0B /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0958C54A20C23C07009E5F0B /* SearchResults.swift */; };
+		0958C54E20C23F20009E5F0B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0958C54D20C23F20009E5F0B /* APIService.swift */; };
 		09BD723B20BE5AE40011FEC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BD723A20BE5AE40011FEC8 /* AppDelegate.swift */; };
 		09BD724020BE5AE40011FEC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09BD723E20BE5AE40011FEC8 /* Main.storyboard */; };
 		09BD724320BE5AE40011FEC8 /* PodcastApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 09BD724120BE5AE40011FEC8 /* PodcastApp.xcdatamodeld */; };
@@ -41,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0958C54A20C23C07009E5F0B /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
+		0958C54D20C23F20009E5F0B /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		09BD723720BE5AE40011FEC8 /* PodcastApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PodcastApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09BD723A20BE5AE40011FEC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09BD723F20BE5AE40011FEC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -92,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0958C54C20C23F13009E5F0B /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0958C54D20C23F20009E5F0B /* APIService.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		09BD722E20BE5AE40011FEC8 = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +127,7 @@
 		09BD723920BE5AE40011FEC8 /* PodcastApp */ = {
 			isa = PBXGroup;
 			children = (
+				0958C54C20C23F13009E5F0B /* API */,
 				09BD723A20BE5AE40011FEC8 /* AppDelegate.swift */,
 				09BD727120BE71560011FEC8 /* Networking */,
 				09BD726920BE65930011FEC8 /* protocols */,
@@ -155,6 +168,7 @@
 			children = (
 				09BD726720BE64CB0011FEC8 /* Podcast.swift */,
 				09BD726C20BE66FC0011FEC8 /* GenericDataSource.swift */,
+				0958C54A20C23C07009E5F0B /* SearchResults.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -418,12 +432,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0958C54E20C23F20009E5F0B /* APIService.swift in Sources */,
 				09BD727B20BE72200011FEC8 /* QueryItemProvider.swift in Sources */,
 				09BD724320BE5AE40011FEC8 /* PodcastApp.xcdatamodeld in Sources */,
 				09BD726820BE64CB0011FEC8 /* Podcast.swift in Sources */,
 				09BD727720BE71E30011FEC8 /* ItunesEntity.swift in Sources */,
 				09BD727020BE6CB60011FEC8 /* PodcastCell.swift in Sources */,
 				09BD726220BE5EB70011FEC8 /* PodcastsSearchController.swift in Sources */,
+				0958C54B20C23C07009E5F0B /* SearchResults.swift in Sources */,
 				09BD727520BE71B80011FEC8 /* ItunesAttribute.swift in Sources */,
 				09BD725E20BE5D210011FEC8 /* MainTabBarController.swift in Sources */,
 				09BD726B20BE659F0011FEC8 /* Reusable.swift in Sources */,

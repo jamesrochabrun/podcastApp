@@ -9,10 +9,10 @@
 import Foundation
 
 
-struct Podcast {
+struct Podcast: Decodable {
     
-    let name: String
-    let artistName: String
+    var trackName: String?
+    var artistName: String?
 }
 
 struct PodcastViewModel {
@@ -21,7 +21,7 @@ struct PodcastViewModel {
     let artistDisplayName: String
     
     init(podcast: Podcast) {
-        displayName = podcast.name
-        artistDisplayName = podcast.artistName
+        displayName = podcast.trackName ?? ""
+        artistDisplayName = podcast.artistName ?? ""
     }
 }
