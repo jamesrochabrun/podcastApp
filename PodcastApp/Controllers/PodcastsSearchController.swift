@@ -28,6 +28,7 @@ class PodcastsSearchController: UITableViewController {
     // MARK:- Set Up UI
     private func setUpTableView() {
         self.tableView.registerNib(PodcastCell.self)
+        self.tableView.tableFooterView = UIView() // remove horizontal lines for empty table view.
     }
     
     private func setUpSearchBar() {
@@ -59,8 +60,22 @@ extension PodcastsSearchController: UISearchBarDelegate {
 
 // MARK:- UITableViewDelegate
 extension PodcastsSearchController {
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 132.0
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Please enter a search term"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 22)
+        label.textColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 150
     }
 }
 

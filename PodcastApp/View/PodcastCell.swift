@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SDWebImage
 
 class PodcastCell: UITableViewCell {
     
@@ -21,7 +22,10 @@ class PodcastCell: UITableViewCell {
         
         trackNameLabel.text = viewModel.displayName
         podcastLabel.text = viewModel.artistDisplayName
-        self.podcastImageView.image = #imageLiteral(resourceName: "appicon")
+        podcastCountLabel.text = viewModel.episodeCount
+        
+        guard let url = URL(string: viewModel.thumbnailArtworkUrl) else { return }
+        podcastImageView.sd_setImage(with: url, placeholderImage: nil)
     }
 }
 
