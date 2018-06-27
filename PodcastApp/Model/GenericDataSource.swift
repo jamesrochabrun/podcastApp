@@ -16,6 +16,10 @@ final class GenericTableDataSource<V, T> : NSObject, UITableViewDataSource where
     private let configureCell: CellConfiguration
     typealias CellConfiguration = (V, T) -> V
     
+    var count: Int {
+        return self.models.count
+    }
+    
     init(models: [T], configureCell: @escaping CellConfiguration) {
         self.models = models
         self.configureCell = configureCell
@@ -34,6 +38,10 @@ final class GenericTableDataSource<V, T> : NSObject, UITableViewDataSource where
     /// MARK: updates for search
     func update(models: [T]) {
         self.models = models
+    }
+    
+    func object(at indexPath: IndexPath) -> T {
+        return self.models[indexPath.item]
     }
 }
 

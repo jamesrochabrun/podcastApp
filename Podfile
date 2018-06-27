@@ -6,9 +6,9 @@ target 'PodcastApp' do
   use_frameworks!
 
   # Pods for PodcastApp
- pod 'SDWebImage', '~> 4.0'
+    pod 'SDWebImage', '~> 4.0'
     pod 'Alamofire', '~> 4.7'
-   
+    pod 'FeedKit', '~> 8.0'
 
 
 

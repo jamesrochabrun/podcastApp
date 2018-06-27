@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		094BE68420E33C5B00A48F47 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BE68320E33C5B00A48F47 /* EpisodesController.swift */; };
+		094BE68620E34A1900A48F47 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BE68520E34A1900A48F47 /* Episode.swift */; };
 		0958C54B20C23C07009E5F0B /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0958C54A20C23C07009E5F0B /* SearchResults.swift */; };
 		0958C54E20C23F20009E5F0B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0958C54D20C23F20009E5F0B /* APIService.swift */; };
 		0958C55020C2426B009E5F0B /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0958C54F20C2426B009E5F0B /* PodcastCell.xib */; };
@@ -44,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		094BE68320E33C5B00A48F47 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
+		094BE68520E34A1900A48F47 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		0958C54A20C23C07009E5F0B /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		0958C54D20C23F20009E5F0B /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		0958C54F20C2426B009E5F0B /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				09BD726120BE5EB70011FEC8 /* PodcastsSearchController.swift */,
 				09BD725F20BE5E0E0011FEC8 /* FavController.swift */,
 				09BD726320BE5FEE0011FEC8 /* DownloadController.swift */,
+				094BE68320E33C5B00A48F47 /* EpisodesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -171,6 +176,7 @@
 				09BD726720BE64CB0011FEC8 /* Podcast.swift */,
 				09BD726C20BE66FC0011FEC8 /* GenericDataSource.swift */,
 				0958C54A20C23C07009E5F0B /* SearchResults.swift */,
+				094BE68520E34A1900A48F47 /* Episode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -383,11 +389,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-PodcastApp/Pods-PodcastApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FeedKit/FeedKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FeedKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -439,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0958C54E20C23F20009E5F0B /* APIService.swift in Sources */,
+				094BE68620E34A1900A48F47 /* Episode.swift in Sources */,
 				09BD727B20BE72200011FEC8 /* QueryItemProvider.swift in Sources */,
 				09BD724320BE5AE40011FEC8 /* PodcastApp.xcdatamodeld in Sources */,
 				09BD726820BE64CB0011FEC8 /* Podcast.swift in Sources */,
@@ -455,6 +464,7 @@
 				09BD726020BE5E0E0011FEC8 /* FavController.swift in Sources */,
 				09BD727320BE71800011FEC8 /* Endpoint.swift in Sources */,
 				09BD726D20BE66FC0011FEC8 /* GenericDataSource.swift in Sources */,
+				094BE68420E33C5B00A48F47 /* EpisodesController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

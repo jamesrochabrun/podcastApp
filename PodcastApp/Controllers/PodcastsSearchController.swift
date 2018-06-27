@@ -16,7 +16,7 @@ class PodcastsSearchController: UITableViewController {
     let searchController = UISearchController(searchResultsController: nil)
 
     // MARK:- Private properties
-    private var tableDataSource: GenericTableDataSource<PodcastCell, PodcastViewModel>?
+    private var tableDataSource: GenericTableDataSource<PodcastCell, Podcast>?
     
     // MARK:- App Lifecycle
     override func viewDidLoad() {
@@ -36,11 +36,13 @@ class PodcastsSearchController: UITableViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
+        self.definesPresentationContext = true // display navbar in pushed view controller
     }
     
     private func setUpDataSource(with models: [Podcast]) {
-        tableDataSource = GenericTableDataSource(models: models.map { PodcastViewModel(podcast: $0) }) { cell, model in
-            cell.configure(viewModel: model)
+        tableDataSource = GenericTableDataSource(models: models) { cell, model in
+            let vModel = PodcastViewModel(podcast: model)
+            cell.configure(viewModel: vModel)
             return cell
         }
         self.tableView.dataSource = tableDataSource
@@ -75,7 +77,16 @@ extension PodcastsSearchController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 150
+        guard let dataSource = self.tableDataSource else { return 0 }
+        return dataSource.count > 0 ? 0 : 132
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let episodesControler = EpisodesController()
+        guard let dataSource = self.tableDataSource else { return }
+        episodesControler.podcast = dataSource.object(at: indexPath)
+        navigationController?.pushViewController(episodesControler, animated: true)
     }
 }
 
