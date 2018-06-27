@@ -21,7 +21,7 @@ class EpisodesController: UITableViewController {
     }
     
     // MARK:- Private properties
-    private var tableDataSource: GenericTableDataSource<PodcastCell, Episode>?
+    private var tableDataSource: GenericTableDataSource<EpisodeCell, Episode>?
     
     // MARK:- App Lifecycle
     override func viewDidLoad() {
@@ -37,7 +37,7 @@ class EpisodesController: UITableViewController {
         parser.parseAsync { (result) in
             switch result {
             case let .rss(feed):
-                if let episodes = feed.items?.compactMap({ Episode(title: $0.title ?? "") }) {
+                if let episodes = feed.items?.compactMap({ Episode(item: $0) }) {
                     DispatchQueue.main.async {
                         self.setUpDataSource(with: episodes)
                     }
@@ -59,7 +59,7 @@ class EpisodesController: UITableViewController {
         tableDataSource = GenericTableDataSource(models: models) { cell, model in
             let vModel = EpisodeViewModel(model: model)
             //cell.configure(viewModel: vModel)
-            cell.trackNameLabel.text = vModel.title
+//            cell.trackNameLabel.text = vModel.title
             return cell
         }
         self.tableView.dataSource = tableDataSource

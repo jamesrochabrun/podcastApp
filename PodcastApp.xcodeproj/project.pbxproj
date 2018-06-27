@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		094BE68420E33C5B00A48F47 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BE68320E33C5B00A48F47 /* EpisodesController.swift */; };
 		094BE68620E34A1900A48F47 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BE68520E34A1900A48F47 /* Episode.swift */; };
+		094BE68820E34CA600A48F47 /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BE68720E34CA600A48F47 /* EpisodeCell.swift */; };
+		094BE68A20E34CB100A48F47 /* EpisodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 094BE68920E34CB100A48F47 /* EpisodeCell.xib */; };
 		0958C54B20C23C07009E5F0B /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0958C54A20C23C07009E5F0B /* SearchResults.swift */; };
 		0958C54E20C23F20009E5F0B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0958C54D20C23F20009E5F0B /* APIService.swift */; };
 		0958C55020C2426B009E5F0B /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0958C54F20C2426B009E5F0B /* PodcastCell.xib */; };
@@ -48,6 +50,8 @@
 /* Begin PBXFileReference section */
 		094BE68320E33C5B00A48F47 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
 		094BE68520E34A1900A48F47 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
+		094BE68720E34CA600A48F47 /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
+		094BE68920E34CB100A48F47 /* EpisodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodeCell.xib; sourceTree = "<group>"; };
 		0958C54A20C23C07009E5F0B /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		0958C54D20C23F20009E5F0B /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		0958C54F20C2426B009E5F0B /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
@@ -194,6 +198,8 @@
 			children = (
 				09BD726F20BE6CB60011FEC8 /* PodcastCell.swift */,
 				0958C54F20C2426B009E5F0B /* PodcastCell.xib */,
+				094BE68720E34CA600A48F47 /* EpisodeCell.swift */,
+				094BE68920E34CB100A48F47 /* EpisodeCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -321,6 +327,7 @@
 			files = (
 				09BD724820BE5AE40011FEC8 /* LaunchScreen.storyboard in Resources */,
 				09BD724520BE5AE40011FEC8 /* Assets.xcassets in Resources */,
+				094BE68A20E34CB100A48F47 /* EpisodeCell.xib in Resources */,
 				0958C55020C2426B009E5F0B /* PodcastCell.xib in Resources */,
 				09BD724020BE5AE40011FEC8 /* Main.storyboard in Resources */,
 			);
@@ -451,6 +458,7 @@
 				09BD727B20BE72200011FEC8 /* QueryItemProvider.swift in Sources */,
 				09BD724320BE5AE40011FEC8 /* PodcastApp.xcdatamodeld in Sources */,
 				09BD726820BE64CB0011FEC8 /* Podcast.swift in Sources */,
+				094BE68820E34CA600A48F47 /* EpisodeCell.swift in Sources */,
 				09BD727720BE71E30011FEC8 /* ItunesEntity.swift in Sources */,
 				09BD727020BE6CB60011FEC8 /* PodcastCell.swift in Sources */,
 				09BD726220BE5EB70011FEC8 /* PodcastsSearchController.swift in Sources */,

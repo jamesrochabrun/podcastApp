@@ -12,10 +12,10 @@ import SDWebImage
 
 class PodcastCell: UITableViewCell {
     
-    @IBOutlet weak var trackNameLabel: UILabel!
-    @IBOutlet weak var podcastLabel: UILabel!
-    @IBOutlet weak var podcastCountLabel: UILabel!
-    @IBOutlet weak var podcastImageView: UIImageView!
+    @IBOutlet private weak var trackNameLabel: UILabel!
+    @IBOutlet private weak var podcastLabel: UILabel!
+    @IBOutlet private weak var podcastCountLabel: UILabel!
+    @IBOutlet private  var podcastImageView: UIImageView!
     
     
     func configure(viewModel: PodcastViewModel) {
