@@ -14,11 +14,13 @@ struct Episode {
     var title: String?
     var description: String?
     var date: Date?
+    var imageUrl: String?
     
     init(item: RSSFeedItem) {
         self.title = item.title
         self.description = item.description
         self.date = item.pubDate
+        self.imageUrl = item.iTunes?.iTunesImage?.attributes?.href
     }
 }
 
@@ -26,12 +28,18 @@ struct EpisodeViewModel {
     
     let title: String
     let description: String
-    let date: Date
+    let date: String
+    var episodeThumbnailUrl: URL?
     
     init(model: Episode) {
         self.title = model.title ?? "No title provided"
         self.description = model.description ?? "No description available"
-        self.date = model.date ?? Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+        self.date = dateFormatter.string(from: model.date ?? Date())
+        if let imageUrl = model.imageUrl {
+            self.episodeThumbnailUrl = URL(string: imageUrl)
+        }
     }
 }
 

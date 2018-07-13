@@ -11,8 +11,16 @@ import UIKit
 
 class EpisodeCell: UITableViewCell {
     
-    @IBOutlet private weak var episodeLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var episodeLabel: UILabel! {
+        didSet {
+            episodeLabel.numberOfLines = 2
+        }
+    }
+    @IBOutlet private weak var descriptionLabel: UILabel! {
+        didSet {
+            descriptionLabel.numberOfLines = 0
+        }
+    }
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var episodeImageView: UIImageView!
     
@@ -21,9 +29,15 @@ class EpisodeCell: UITableViewCell {
         
         episodeLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
-        dateLabel.text = "episode Date \(viewModel.date.description)"
-//
-//        guard let url = URL(string: viewModel.thumbnailArtworkUrl) else { return }
-//        podcastImageView.sd_setImage(with: url, placeholderImage: nil)
+        dateLabel.text = "\(viewModel.date.description)"
+        guard let thumbnailUrl = viewModel.episodeThumbnailUrl else { return }
+        episodeImageView.sd_setImage(with: thumbnailUrl)
     }
 }
+
+
+
+
+
+
+

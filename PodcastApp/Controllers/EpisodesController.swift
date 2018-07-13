@@ -33,24 +33,13 @@ class EpisodesController: UITableViewController {
     private func updateUI(with model: EpisodeControllerViewModel) {
         setUpNav(title: model.title)
         guard let feedUrl = model.feedUrl else { return }
-        let parser = FeedParser(URL: feedUrl)
-        parser.parseAsync { (result) in
-            switch result {
-            case let .rss(feed):
-                if let episodes = feed.items?.compactMap({ Episode(item: $0) }) {
-                    DispatchQueue.main.async {
-                        self.setUpDataSource(with: episodes)
-                    }
-                }
-            case let .failure(error):
-                print("the error is!!!, \(error)")
-            default: break
-            }
+        APIService.shared.fetchEpisodes(feedUrl: feedUrl) { episodes in
+            self.setUpDataSource(with: episodes)
         }
     }
     
     private func setUpTableView() {
-        self.tableView.registerNib(PodcastCell.self)
+        self.tableView.registerNib(EpisodeCell.self)
         self.tableView.tableFooterView = UIView() // remove horizontal lines for empty table view.
     }
     
@@ -58,8 +47,7 @@ class EpisodesController: UITableViewController {
         
         tableDataSource = GenericTableDataSource(models: models) { cell, model in
             let vModel = EpisodeViewModel(model: model)
-            //cell.configure(viewModel: vModel)
-//            cell.trackNameLabel.text = vModel.title
+            cell.configure(viewModel: vModel)
             return cell
         }
         self.tableView.dataSource = tableDataSource
@@ -78,19 +66,9 @@ extension EpisodesController {
         return 132.0
     }
     
-//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let label = UILabel()
-//        label.text = "Please enter a search term"
-//        label.textAlignment = .center
-//        label.font = UIFont.systemFont(ofSize: 22)
-//        label.textColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
-//        return label
-//    }
-    
-//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        guard let dataSource = self.tableDataSource else { return 0 }
-//        return dataSource.count > 0 ? 0 : 132
-//    }
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 132
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
