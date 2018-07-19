@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import AVKit
 
-
 /// Object that manages the animation state
 enum AnimationState {
     
@@ -71,14 +70,13 @@ class PlayerDetailsView: UIView {
     
     private let player: AVPlayer = {
         let player = AVPlayer()
-        player.automaticallyWaitsToMinimizeStalling = false
+        player.automaticallyWaitsToMinimizeStalling = true
         return player
     }()
     
     // MARK:- View Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         observePlayerCurrentTime()
         observeBoundaryTime()
     }
@@ -112,8 +110,7 @@ class PlayerDetailsView: UIView {
         
         let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
         let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(1, 1))
-        let percentage = currentTimeSeconds / durationSeconds
-        self.currentTimeSlider.value = Float(percentage)
+        self.currentTimeSlider.value = self.viewModel.setPercentageOnSliderValue(currentTimeSeconds, dividedBy: durationSeconds)
     }
     
     fileprivate func observeBoundaryTime() {
@@ -129,6 +126,32 @@ class PlayerDetailsView: UIView {
     // MARK:- Actions
     @IBAction func dismiss(_ sender: UIButton) {
         self.removeFromSuperview()
+    }
+    
+    @IBAction func handleSliderTimeChanged(_ sender: UISlider) {
+        
+        let percentage = currentTimeSlider.value
+        guard let duration = player.currentItem?.duration else { return }
+        let seekTime = self.viewModel.calculateSeekTimeForSliderChange(with: percentage, and: duration)
+        player.seek(to: seekTime)
+    }
+    
+    @IBAction func rewind(_ sender: UIButton) {
+        self.seekToCurrentTime(delta: -15)
+    }
+    
+    @IBAction func fastForward(_ sender: UIButton) {
+        self.seekToCurrentTime(delta: 15)
+    }
+    
+    @IBAction func handleVolumeChanged(_ sender: UISlider) {
+        player.volume = sender.value
+    }
+    
+    private func seekToCurrentTime(delta: Int64) {
+        
+        let seekTime = CMTimeAdd(player.currentTime(), self.viewModel.getTimeWith(delta: delta))
+        player.seek(to: seekTime)
     }
     
     @IBAction func handlePlayPause(_ sender: UIButton) {
@@ -170,6 +193,23 @@ struct PlayerDetailsViewModel {
     
     func playPauseImage(for status: AVPlayerTimeControlStatus) -> UIImage {
         return status == .playing ? #imageLiteral(resourceName: "play") : #imageLiteral(resourceName: "pause")
+    }
+    
+    func getTimeWith(delta: Int64) -> CMTime {
+        return CMTimeMake(delta, 1)
+    }
+    
+    func setPercentageOnSliderValue(_ currentTimeSeconds: Float64, dividedBy durationSeconds: Float64) -> Float {
+        let percentage = currentTimeSeconds / durationSeconds
+        return Float(percentage)
+    }
+    
+    func calculateSeekTimeForSliderChange(with percentage: Float, and duration: CMTime) -> CMTime {
+        
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
+        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, 1)
+        return seekTime
     }
 }
 
