@@ -39,7 +39,7 @@
                                 <constraint firstAttribute="width" secondItem="Dq7-ho-g9o" secondAttribute="height" multiplier="1:1" id="lQ9-nn-2bf"/>
                             </constraints>
                         </imageView>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nvc-pS-QBA">
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nvc-pS-QBA">
                             <rect key="frame" x="-2" y="326" width="276" height="37"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="Dji-sH-qqI"/>
@@ -48,13 +48,13 @@
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="urA-Ei-U8n">
                             <rect key="frame" x="0.0" y="367" width="272" height="22"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TeO-5X-n49">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TeO-5X-n49">
                                     <rect key="frame" x="0.0" y="0.0" width="136" height="22"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="38:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T8O-eH-TRB">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="38:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T8O-eH-TRB">
                                     <rect key="frame" x="136" y="0.0" width="136" height="22"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -167,10 +167,13 @@
             <viewLayoutGuide key="safeArea" id="ev9-vN-xC5"/>
             <connections>
                 <outlet property="authorLabel" destination="tw6-RW-ArM" id="9js-lM-ER2"/>
+                <outlet property="currentTimeLabel" destination="TeO-5X-n49" id="3hO-2U-Dyn"/>
+                <outlet property="currentTimeSlider" destination="nvc-pS-QBA" id="wd3-QL-thn"/>
                 <outlet property="dismissButton" destination="6Sw-U9-8BW" id="7Nz-Cy-bsX"/>
                 <outlet property="episodeTitleLabel" destination="ZXO-qs-xQ6" id="piv-Rs-ogJ"/>
                 <outlet property="playPauseButton" destination="1Ta-Mm-Nlx" id="Yma-kj-ogX"/>
                 <outlet property="podcastImageView" destination="Dq7-ho-g9o" id="ff3-W6-5J1"/>
+                <outlet property="remainingTimeLabel" destination="T8O-eH-TRB" id="IA7-jP-V8i"/>
                 <outlet property="trackSlider" destination="nvc-pS-QBA" id="H7A-mj-DHF"/>
             </connections>
             <point key="canvasLocation" x="-69.5" y="54.5"/>

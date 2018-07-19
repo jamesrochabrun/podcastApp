@@ -49,6 +49,9 @@ class PlayerDetailsView: UIView {
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
         }
     }
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var remainingTimeLabel: UILabel!
+    @IBOutlet weak var currentTimeSlider: UISlider!
     
     // MARK:- Properties
     var episode: Episode! {
@@ -76,12 +79,8 @@ class PlayerDetailsView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let time = CMTimeMake(1, 3)
-        let times = [NSValue(time: time)]
-        /// starts an action in the closure as soon the podcast starts
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-            self.animationState = .normal
-        }
+        observePlayerCurrentTime()
+        observeBoundaryTime()
     }
 
     // MARK:- Config
@@ -95,6 +94,35 @@ class PlayerDetailsView: UIView {
         }
         if let steramUrl = viewModel.streamUrl {
             self.playEpisode(with: steramUrl)
+        }
+    }
+    
+    fileprivate func observePlayerCurrentTime() {
+        
+        let interval = CMTimeMake(1, 2)
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
+            self.currentTimeLabel.text = time.displayString
+            let durationTime = self.player.currentItem?.duration
+            self.remainingTimeLabel.text = durationTime?.displayString
+            self.updateSlider()
+        }
+    }
+    
+    private func updateSlider() {
+        
+        let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
+        let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(1, 1))
+        let percentage = currentTimeSeconds / durationSeconds
+        self.currentTimeSlider.value = Float(percentage)
+    }
+    
+    fileprivate func observeBoundaryTime() {
+        
+        let time = CMTimeMake(1, 3)
+        let times = [NSValue(time: time)]
+        /// starts an action in the closure as soon the podcast starts
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            self.animationState = .normal
         }
     }
     
