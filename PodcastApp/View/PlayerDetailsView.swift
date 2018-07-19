@@ -10,11 +10,33 @@ import Foundation
 import UIKit
 import AVKit
 
+
+/// Object that manages the animation state
+enum AnimationState {
+    
+    case normal
+    case shrinked
+    
+    var imageViewTransform: CGAffineTransform {
+        
+        switch self {
+        case .normal: return CGAffineTransform.identity
+        case .shrinked: return CGAffineTransform(scaleX: 0.7, y: 0.7)
+        }
+    }
+}
+
 class PlayerDetailsView: UIView {
     
     // MARK:- UI
     @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var podcastImageView: UIImageView!
+    @IBOutlet weak var podcastImageView: UIImageView! {
+        didSet {
+            podcastImageView.layer.cornerRadius = 5
+            podcastImageView.clipsToBounds = true
+            podcastImageView.transform = self.animationState.imageViewTransform
+        }
+    }
     @IBOutlet weak var episodeTitleLabel: UILabel! {
         didSet {
             episodeTitleLabel.numberOfLines = 2
@@ -36,12 +58,30 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    private var animationState: AnimationState = .shrinked {
+        didSet {
+            animateImageView(transform: animationState.imageViewTransform)
+        }
+    }
+    
     private let player: AVPlayer = {
         let player = AVPlayer()
         player.automaticallyWaitsToMinimizeStalling = false
         return player
     }()
     
+    // MARK:- View Lifecycle
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let time = CMTimeMake(1, 3)
+        let times = [NSValue(time: time)]
+        /// starts an action in the closure as soon the podcast starts
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            self.animationState = .normal
+        }
+    }
+
     // MARK:- Config
     private func configure(with viewModel: PlayerDetailsViewModel) {
         
@@ -65,9 +105,11 @@ class PlayerDetailsView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self.animationState = .normal
         } else {
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             player.pause()
+            self.animationState = .shrinked
         }
     }
     
@@ -76,6 +118,13 @@ class PlayerDetailsView: UIView {
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
         player.play()
+    }
+    
+    private func animateImageView(transform: CGAffineTransform) {
+        
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.podcastImageView.transform = transform
+        })
     }
 }
 
