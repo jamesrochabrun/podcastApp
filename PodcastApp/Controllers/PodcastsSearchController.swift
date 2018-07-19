@@ -79,12 +79,7 @@ extension PodcastsSearchController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.text = "Please enter a search term"
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 22)
-        label.textColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
-        return label
+        return Bundle.main.loadNibNamed("SearchHeaderView", owner: self, options: nil)?.first as? UIView
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
