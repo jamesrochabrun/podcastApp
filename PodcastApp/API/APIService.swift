@@ -17,16 +17,17 @@ class APIService {
     
     func fetchEpisodes(feedUrl: URL, completion: @escaping ([Episode]) -> ()) {
         
-        let parser = FeedParser(URL: feedUrl)
-        parser.parseAsync { (result) in
-            
-            if let err = result.error {
-                print("the error is!!!, \(err)")
-                return
-            }
-            guard let feed = result.rssFeed else { return }
-            DispatchQueue.main.async {
-                completion(feed.toEpisodes())
+        DispatchQueue.global(qos: .background).async {
+            let parser = FeedParser(URL: feedUrl)
+            parser.parseAsync { (result) in
+                if let err = result.error {
+                    print("the error is!!!, \(err)")
+                    return
+                }
+                guard let feed = result.rssFeed else { return }
+                DispatchQueue.main.async {
+                    completion(feed.toEpisodes())
+                }
             }
         }
     }

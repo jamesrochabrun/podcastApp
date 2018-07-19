@@ -20,6 +20,10 @@ final class GenericTableDataSource<V, T> : NSObject, UITableViewDataSource where
         return self.models.count
     }
     
+    var isEmpty: Bool {
+        return self.models.isEmpty
+    }
+    
     init(models: [T], configureCell: @escaping CellConfiguration) {
         self.models = models
         self.configureCell = configureCell

@@ -13,10 +13,12 @@ import Alamofire
 class PodcastsSearchController: UITableViewController {
     
     // MARK:- UI
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var podcastsSearchView = Bundle.main.loadNibNamed("PodcastSearchingView", owner: self, options: nil)?.first as? UIView
 
     // MARK:- Private properties
     private var tableDataSource: GenericTableDataSource<PodcastCell, Podcast>?
+    private var timer: Timer?
     
     // MARK:- App Lifecycle
     override func viewDidLoad() {
@@ -54,10 +56,18 @@ class PodcastsSearchController: UITableViewController {
 extension PodcastsSearchController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        APIService.shared.fetchPodcasts(searchText: searchText) { (podcasts) in
-            self.setUpDataSource(with: podcasts)
-            self.tableView.reloadData()
-        }
+        
+        /// introducing a delay to avoid agressive calls to the API
+        self.tableDataSource = nil
+        self.tableView.reloadData()
+ 
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [unowned self] _ in
+            APIService.shared.fetchPodcasts(searchText: searchText) { (podcasts) in
+                self.setUpDataSource(with: podcasts)
+                self.tableView.reloadData()
+            }
+        })
     }
 }
 
@@ -79,7 +89,7 @@ extension PodcastsSearchController {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let dataSource = self.tableDataSource else { return 0 }
-        return dataSource.count > 0 ? 0 : 132
+        return dataSource.isEmpty  && searchController.searchBar.text?.isEmpty == true ? 250 : 0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -88,6 +98,15 @@ extension PodcastsSearchController {
         guard let dataSource = self.tableDataSource else { return }
         episodesControler.podcast = dataSource.object(at: indexPath)
         navigationController?.pushViewController(episodesControler, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return self.podcastsSearchView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard let dSource = self.tableDataSource else { return 200 }
+        return dSource.isEmpty && searchController.searchBar.text?.isEmpty == false ? 200 : 0
     }
 }
 

@@ -80,6 +80,10 @@ class PlayerDetailsView: UIView {
         observePlayerCurrentTime()
         observeBoundaryTime()
     }
+    
+    deinit {
+        print("Player memory reclaimed")
+    }
 
     // MARK:- Config
     private func configure(with viewModel: PlayerDetailsViewModel) {
@@ -98,11 +102,11 @@ class PlayerDetailsView: UIView {
     fileprivate func observePlayerCurrentTime() {
         
         let interval = CMTimeMake(1, 2)
-        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
-            self.currentTimeLabel.text = time.displayString
-            let durationTime = self.player.currentItem?.duration
-            self.remainingTimeLabel.text = durationTime?.displayString
-            self.updateSlider()
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            self?.currentTimeLabel.text = time.displayString
+            let durationTime = self?.player.currentItem?.duration
+            self?.remainingTimeLabel.text = durationTime?.displayString
+            self?.updateSlider()
         }
     }
     
@@ -118,8 +122,8 @@ class PlayerDetailsView: UIView {
         let time = CMTimeMake(1, 3)
         let times = [NSValue(time: time)]
         /// starts an action in the closure as soon the podcast starts
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-            self.animationState = .normal
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.animationState = .normal
         }
     }
     

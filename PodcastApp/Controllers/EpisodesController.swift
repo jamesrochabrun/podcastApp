@@ -12,6 +12,13 @@ import FeedKit
 
 class EpisodesController: UITableViewController {
     
+    // MARK:- UI
+    private let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityIndicator.color = .darkGray
+        return activityIndicator
+    }()
+    
     // MARK:- Public properties
     var podcast: Podcast? {
         didSet {
@@ -79,9 +86,18 @@ extension EpisodesController {
         playerDetailView.episode = episode
         playerDetailView.frame = self.view.frame
         window.addSubview(playerDetailView)
-
     }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        activityIndicator.startAnimating()
+        return self.activityIndicator
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard let dSource = self.tableDataSource else { return 200 }
+        dSource.isEmpty ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+        return dSource.isEmpty ? 200 : 0
+    }
 }
 
 
