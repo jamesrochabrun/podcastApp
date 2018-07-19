@@ -15,13 +15,13 @@ import AVKit
 enum AnimationState {
     
     case normal
-    case shrinked
+    case shrink
     
     var imageViewTransform: CGAffineTransform {
         
         switch self {
         case .normal: return CGAffineTransform.identity
-        case .shrinked: return CGAffineTransform(scaleX: 0.7, y: 0.7)
+        case .shrink: return CGAffineTransform(scaleX: 0.7, y: 0.7)
         }
     }
 }
@@ -58,7 +58,9 @@ class PlayerDetailsView: UIView {
         }
     }
     
-    private var animationState: AnimationState = .shrinked {
+    private var viewModel: PlayerDetailsViewModel!
+    
+    private var animationState: AnimationState = .shrink {
         didSet {
             animateImageView(transform: animationState.imageViewTransform)
         }
@@ -85,6 +87,7 @@ class PlayerDetailsView: UIView {
     // MARK:- Config
     private func configure(with viewModel: PlayerDetailsViewModel) {
         
+        self.viewModel = viewModel
         episodeTitleLabel.text = viewModel.episodeTitle
         authorLabel.text = viewModel.authorName
         if let url = viewModel.imageUrl {
@@ -102,15 +105,10 @@ class PlayerDetailsView: UIView {
     
     @IBAction func handlePlayPause(_ sender: UIButton) {
         
-        if player.timeControlStatus == .paused {
-            player.play()
-            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-            self.animationState = .normal
-        } else {
-            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
-            player.pause()
-            self.animationState = .shrinked
-        }
+        let buttonImage = self.viewModel.playPauseImage(for: player.timeControlStatus)
+        playPauseButton.setImage(buttonImage, for: .normal)
+        player.timeControlStatus == .paused ? player.play() : player.pause()
+        self.animationState = player.timeControlStatus == .playing ? .normal : .shrink
     }
     
     private func playEpisode(with url: URL) {
@@ -140,6 +138,10 @@ struct PlayerDetailsViewModel {
         self.imageUrl = URL(string: model.imageUrl ?? "")
         self.authorName = model.author ?? "No author title"
         self.streamUrl = URL(string: model.streamUrl ?? "")
+    }
+    
+    func playPauseImage(for status: AVPlayerTimeControlStatus) -> UIImage {
+        return status == .playing ? #imageLiteral(resourceName: "play") : #imageLiteral(resourceName: "pause")
     }
 }
 
