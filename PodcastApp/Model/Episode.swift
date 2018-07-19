@@ -15,12 +15,14 @@ struct Episode {
     var description: String?
     var date: Date?
     var imageUrl: String?
+    let author: String?
     
     init(item: RSSFeedItem) {
         self.title = item.title
-        self.description = item.description
+        self.description = item.iTunes?.iTunesSubtitle ?? item.description
         self.date = item.pubDate
         self.imageUrl = item.iTunes?.iTunesImage?.attributes?.href
+        self.author = item.iTunes?.iTunesAuthor
     }
 }
 
@@ -30,6 +32,7 @@ struct EpisodeViewModel {
     let description: String
     let date: String
     var episodeThumbnailUrl: URL?
+    var authorName: String
     
     init(model: Episode) {
         self.title = model.title ?? "No title provided"
@@ -40,6 +43,7 @@ struct EpisodeViewModel {
         if let imageUrl = model.imageUrl {
             self.episodeThumbnailUrl = URL(string: imageUrl)
         }
+        self.authorName = model.author ?? "No author title provided"
     }
 }
 

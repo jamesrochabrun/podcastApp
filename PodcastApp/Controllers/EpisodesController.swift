@@ -67,11 +67,29 @@ extension EpisodesController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 132
+        return 132.0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        guard let episode = self.tableDataSource?.object(at: indexPath) else { return }
+        guard let window = UIApplication.shared.keyWindow else { return }
+        
+        guard let playerDetailView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as? PlayerDetailsView else { return }
+        playerDetailView.episode = episode
+        playerDetailView.frame = self.view.frame
+        window.addSubview(playerDetailView)
+
     }
+    
 }
+
+
+
+
+
+
+
+
+
 

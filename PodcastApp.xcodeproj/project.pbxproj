@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090302EB20FECC8C004EEFCF /* PlayerDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 090302EA20FECC8C004EEFCF /* PlayerDetailsView.xib */; };
+		090302ED20FECE24004EEFCF /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090302EC20FECE24004EEFCF /* PlayerDetailsView.swift */; };
 		0905E8F120F90C7E00D1ED41 /* Extension+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0905E8F020F90C7E00D1ED41 /* Extension+String.swift */; };
 		0905E8F320F90D8400D1ED41 /* RSSFeed+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0905E8F220F90D8400D1ED41 /* RSSFeed+Extension.swift */; };
 		094BE68420E33C5B00A48F47 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BE68320E33C5B00A48F47 /* EpisodesController.swift */; };
@@ -50,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		090302EA20FECC8C004EEFCF /* PlayerDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerDetailsView.xib; sourceTree = "<group>"; };
+		090302EC20FECE24004EEFCF /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
 		0905E8F020F90C7E00D1ED41 /* Extension+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
 		0905E8F220F90D8400D1ED41 /* RSSFeed+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSSFeed+Extension.swift"; sourceTree = "<group>"; };
 		094BE68320E33C5B00A48F47 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
@@ -214,6 +218,8 @@
 				0958C54F20C2426B009E5F0B /* PodcastCell.xib */,
 				094BE68720E34CA600A48F47 /* EpisodeCell.swift */,
 				094BE68920E34CB100A48F47 /* EpisodeCell.xib */,
+				090302EA20FECC8C004EEFCF /* PlayerDetailsView.xib */,
+				090302EC20FECE24004EEFCF /* PlayerDetailsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -339,6 +345,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				090302EB20FECC8C004EEFCF /* PlayerDetailsView.xib in Resources */,
 				09BD724820BE5AE40011FEC8 /* LaunchScreen.storyboard in Resources */,
 				09BD724520BE5AE40011FEC8 /* Assets.xcassets in Resources */,
 				094BE68A20E34CB100A48F47 /* EpisodeCell.xib in Resources */,
@@ -483,6 +490,7 @@
 				09BD725E20BE5D210011FEC8 /* MainTabBarController.swift in Sources */,
 				09BD726B20BE659F0011FEC8 /* Reusable.swift in Sources */,
 				09BD727920BE71FB0011FEC8 /* ItunesMedia.swift in Sources */,
+				090302ED20FECE24004EEFCF /* PlayerDetailsView.swift in Sources */,
 				09BD726420BE5FEE0011FEC8 /* DownloadController.swift in Sources */,
 				09BD723B20BE5AE40011FEC8 /* AppDelegate.swift in Sources */,
 				09BD726020BE5E0E0011FEC8 /* FavController.swift in Sources */,
