@@ -17,12 +17,18 @@ enum AnimationState {
     case shrink
     
     var imageViewTransform: CGAffineTransform {
-        
         switch self {
         case .normal: return CGAffineTransform.identity
         case .shrink: return CGAffineTransform(scaleX: 0.7, y: 0.7)
+        default: return .identity
         }
     }
+}
+
+enum MinPlayerGestureState {
+    
+    
+    
 }
 
 class PlayerDetailsView: UIView {
@@ -153,8 +159,10 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    // MARK:- Gestures
     func setUpGestures() {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
     
     // MARK:- Actions
@@ -218,8 +226,39 @@ class PlayerDetailsView: UIView {
         tabBarController.maximizePlayerDetails(with: nil)
     }
     
-    /// Min Player actions
+    @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
+        
+        if gesture.state == .began {
+            self.handleBegan(gesture: gesture)
+        } else if gesture.state == .changed {
+            self.handleChanged(gesture: gesture)
+        } else if gesture.state == .ended {
+            self.handleEnded(gesture: gesture)
+        }
+    }
     
+    /// Methods for pan gesture states
+    func handleBegan(gesture: UIPanGestureRecognizer) {
+        
+    }
+    
+    func handleChanged(gesture: UIPanGestureRecognizer) {
+        
+        let translation = gesture.translation(in: self.superview)
+        self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        /// 200 is the y coordinate where the alpha will be complete changed
+        self.miniPlayerView.alpha = 1 + translation.y / 200
+        self.maximizedStackview.alpha = -translation.y / 200
+    }
+    
+    func handleEnded(gesture: UIPanGestureRecognizer) {
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 07, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.transform = .identity
+            self.miniPlayerView.alpha = 1
+            self.maximizedStackview.alpha = 0
+        })
+    }
 }
 
 struct PlayerDetailsViewModel {

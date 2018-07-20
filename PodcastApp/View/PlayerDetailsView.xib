@@ -20,6 +20,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZL-qc-WLp">
                     <rect key="frame" x="0.0" y="44" width="375" height="64"/>
                     <subviews>
+                        <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgu-0E-4mx">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
+                            <color key="backgroundColor" red="0.38273419710000001" green="0.2258029141" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="KnS-PJ-Imk"/>
+                            </constraints>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8Qt-VO-KDF">
                             <rect key="frame" x="8" y="8" width="359" height="48"/>
                             <subviews>
@@ -64,9 +71,12 @@
                     <constraints>
                         <constraint firstItem="8Qt-VO-KDF" firstAttribute="top" secondItem="nZL-qc-WLp" secondAttribute="top" constant="8" id="CcY-W2-cf1"/>
                         <constraint firstItem="8Qt-VO-KDF" firstAttribute="leading" secondItem="nZL-qc-WLp" secondAttribute="leading" constant="8" id="Q4J-q5-D7o"/>
+                        <constraint firstAttribute="trailing" secondItem="tgu-0E-4mx" secondAttribute="trailing" id="TMZ-cd-Noe"/>
+                        <constraint firstItem="tgu-0E-4mx" firstAttribute="leading" secondItem="nZL-qc-WLp" secondAttribute="leading" id="TZY-HB-qRC"/>
                         <constraint firstAttribute="height" constant="64" id="b8m-V7-th8"/>
                         <constraint firstAttribute="trailing" secondItem="8Qt-VO-KDF" secondAttribute="trailing" constant="8" id="lUD-Q4-jOz"/>
                         <constraint firstAttribute="bottom" secondItem="8Qt-VO-KDF" secondAttribute="bottom" constant="8" id="nin-Dy-Yaj"/>
+                        <constraint firstItem="tgu-0E-4mx" firstAttribute="top" secondItem="nZL-qc-WLp" secondAttribute="top" id="xUN-98-UqF"/>
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="nK4-Wz-rUw">
