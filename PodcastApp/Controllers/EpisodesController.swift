@@ -81,11 +81,11 @@ extension EpisodesController {
         
         guard let episode = self.tableDataSource?.object(at: indexPath) else { return }
         guard let window = UIApplication.shared.keyWindow else { return }
+        guard let tabBarController = window.rootViewController as? MainTabBarController else { return }
+        tabBarController.maximizePlayerDetails(with: episode)
         
-        guard let playerDetailView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as? PlayerDetailsView else { return }
+        guard let playerDetailView = PlayerDetailsView.initFromNib() else { return }
         playerDetailView.episode = episode
-        playerDetailView.frame = self.view.frame
-        window.addSubview(playerDetailView)
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

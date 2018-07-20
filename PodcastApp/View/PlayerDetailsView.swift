@@ -51,6 +51,27 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var remainingTimeLabel: UILabel!
     @IBOutlet weak var currentTimeSlider: UISlider!
+    /// Stackview and miniplayer
+    @IBOutlet weak var maximizedStackview: UIStackView!
+    @IBOutlet weak var miniPlayerView: UIView!
+    /// Mini Player UI
+    @IBOutlet weak var miniplayerViewImageView: UIImageView!
+    @IBOutlet weak var miniPlayerViewTitleLabel: UILabel!
+    @IBOutlet weak var miniPlayerPlayPauseButton: UIButton! {
+        didSet {
+            miniPlayerPlayPauseButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        }
+    }
+    @IBOutlet weak var miniPlayerForward: UIButton! {
+        didSet {
+            miniPlayerForward.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        }
+    }
+    
+    // MARK:- Static Function
+    static func initFromNib() -> PlayerDetailsView? {
+        return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as? PlayerDetailsView
+    }
     
     // MARK:- Properties
     var episode: Episode! {
@@ -60,8 +81,8 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    // MARK:- Private Properties
     private var viewModel: PlayerDetailsViewModel!
-    
     private var animationState: AnimationState = .shrink {
         didSet {
             animateImageView(transform: animationState.imageViewTransform)
@@ -79,6 +100,7 @@ class PlayerDetailsView: UIView {
         super.awakeFromNib()
         observePlayerCurrentTime()
         observeBoundaryTime()
+        setUpGestures()
     }
     
     deinit {
@@ -89,6 +111,7 @@ class PlayerDetailsView: UIView {
     private func configure(with viewModel: PlayerDetailsViewModel) {
         
         self.viewModel = viewModel
+        /// Max Player
         episodeTitleLabel.text = viewModel.episodeTitle
         authorLabel.text = viewModel.authorName
         if let url = viewModel.imageUrl {
@@ -97,6 +120,9 @@ class PlayerDetailsView: UIView {
         if let steramUrl = viewModel.streamUrl {
             self.playEpisode(with: steramUrl)
         }
+        /// Min Player
+        miniPlayerViewTitleLabel.text = episodeTitleLabel.text
+        miniplayerViewImageView.image = podcastImageView.image
     }
     
     fileprivate func observePlayerCurrentTime() {
@@ -127,9 +153,15 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    func setUpGestures() {
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+    }
+    
     // MARK:- Actions
     @IBAction func dismiss(_ sender: UIButton) {
-        self.removeFromSuperview()
+        
+        guard let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
+        tabBarController.minimizePlayerDetails()
     }
     
     @IBAction func handleSliderTimeChanged(_ sender: UISlider) {
@@ -162,8 +194,9 @@ class PlayerDetailsView: UIView {
         
         let buttonImage = self.viewModel.playPauseImage(for: player.timeControlStatus)
         playPauseButton.setImage(buttonImage, for: .normal)
+        miniPlayerPlayPauseButton.setImage(buttonImage, for: .normal)
         player.timeControlStatus == .paused ? player.play() : player.pause()
-        self.animationState = player.timeControlStatus == .playing ? .normal : .shrink
+        self.animationState = player.timeControlStatus == .paused ? .shrink : .normal
     }
     
     private func playEpisode(with url: URL) {
@@ -179,6 +212,14 @@ class PlayerDetailsView: UIView {
             self.podcastImageView.transform = transform
         })
     }
+    
+    @objc func handleTapMaximize() {
+        guard let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
+        tabBarController.maximizePlayerDetails(with: nil)
+    }
+    
+    /// Min Player actions
+    
 }
 
 struct PlayerDetailsViewModel {
