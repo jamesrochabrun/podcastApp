@@ -53,7 +53,7 @@ class EpisodesController: UITableViewController {
     private func setUpDataSource(with models: [Episode]) {
         
         tableDataSource = GenericTableDataSource(models: models) { cell, model in
-            let vModel = EpisodeViewModel(model: model)
+            let vModel = EpisodeCellViewModel(model: model)
             cell.configure(viewModel: vModel)
             return cell
         }

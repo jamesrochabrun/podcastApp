@@ -160,19 +160,11 @@ class PlayerDetailsView: UIView {
         }
     }
     
-    // MARK:- Gestures
-    func setUpGestures() {
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        addGestureRecognizer(panGesture!)
-    }
-    
     // MARK:- Actions
     @IBAction func dismiss(_ sender: UIButton) {
         
         guard let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
         tabBarController.minimizePlayerDetails()
-        panGesture?.isEnabled = true
     }
     
     @IBAction func handleSliderTimeChanged(_ sender: UISlider) {
@@ -224,10 +216,18 @@ class PlayerDetailsView: UIView {
         })
     }
     
+    // MARK:- Gestures
+    func setUpGestures() {
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        miniPlayerView.addGestureRecognizer(panGesture!)
+        
+        maximizedStackview.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
+    }
+    
+    /// Gesture actions
     @objc func handleTapMaximize() {
-        guard let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
-        tabBarController.maximizePlayerDetails()
-        panGesture?.isEnabled = false
+        UIApplication.mainTabBarController?.maximizePlayerDetails()
     }
     
     @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
@@ -241,9 +241,25 @@ class PlayerDetailsView: UIView {
         }
     }
     
-    /// Methods for pan gesture states
-    func handleBegan(gesture: UIPanGestureRecognizer) {
+    @objc func handleDismissalPan(_ gesture: UIPanGestureRecognizer) {
         
+        let translation = gesture.translation(in: superview)
+        if gesture.state == .changed {
+            maximizedStackview.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        } else if gesture.state == .ended {
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 07, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.maximizedStackview.transform = .identity
+                if translation.y > 75 {
+                    UIApplication.mainTabBarController?.minimizePlayerDetails()
+                }
+            })
+        }
+    }
+    
+    /// Helper Methods for pan gesture states
+    func handleBegan(gesture: UIPanGestureRecognizer) {
+        ///
     }
     
     func handleChanged(gesture: UIPanGestureRecognizer) {
@@ -264,51 +280,12 @@ class PlayerDetailsView: UIView {
             self.transform = .identity
             
             if translation.y < -200 || velocity.y < -500 {
-                let maintabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-                maintabBarController?.maximizePlayerDetails()
-                gesture.isEnabled = false
-               // self.handleTapMaximize()
+                UIApplication.mainTabBarController?.maximizePlayerDetails()
             } else {
                 self.miniPlayerView.alpha = 1
                 self.maximizedStackview.alpha = 0
             }
         })
-    }
-}
-
-struct PlayerDetailsViewModel {
-    
-    let episodeTitle: String
-    let imageUrl: URL?
-    let authorName: String
-    let streamUrl: URL?
-    
-    init(model: Episode) {
-        self.episodeTitle = model.title ?? "No title provided"
-        self.imageUrl = URL(string: model.imageUrl ?? "")
-        self.authorName = model.author ?? "No author title"
-        self.streamUrl = URL(string: model.streamUrl ?? "")
-    }
-    
-    func playPauseImage(for status: AVPlayerTimeControlStatus) -> UIImage {
-        return status == .playing ? #imageLiteral(resourceName: "play") : #imageLiteral(resourceName: "pause")
-    }
-    
-    func getTimeWith(delta: Int64) -> CMTime {
-        return CMTimeMake(delta, 1)
-    }
-    
-    func setPercentageOnSliderValue(_ currentTimeSeconds: Float64, dividedBy durationSeconds: Float64) -> Float {
-        let percentage = currentTimeSeconds / durationSeconds
-        return Float(percentage)
-    }
-    
-    func calculateSeekTimeForSliderChange(with percentage: Float, and duration: CMTime) -> CMTime {
-        
-        let durationInSeconds = CMTimeGetSeconds(duration)
-        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
-        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, 1)
-        return seekTime
     }
 }
 

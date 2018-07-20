@@ -25,7 +25,7 @@ class EpisodeCell: UITableViewCell {
     @IBOutlet private weak var episodeImageView: UIImageView!
     
     
-    func configure(viewModel: EpisodeViewModel) {
+    func configure(viewModel: EpisodeCellViewModel) {
         
         episodeLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
