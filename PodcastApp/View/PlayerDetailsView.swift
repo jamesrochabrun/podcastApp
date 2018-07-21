@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 import AVKit
 
-/// Object that manages the animation state
-enum AnimationState {
+/// Object that manages the animation state for the imageview
+enum ImageViewAnimationstate {
     
     case normal
     case shrink
@@ -20,15 +20,13 @@ enum AnimationState {
         switch self {
         case .normal: return CGAffineTransform.identity
         case .shrink: return CGAffineTransform(scaleX: 0.7, y: 0.7)
-        default: return .identity
         }
     }
 }
 
-enum MinPlayerGestureState {
-    
-    
-    
+protocol PlayerDetailsViewDelegate: class {
+    func maximizePlayerDetails(with episode: Episode?)
+    func minimizePlayerDetails()
 }
 
 class PlayerDetailsView: UIView {
@@ -76,7 +74,7 @@ class PlayerDetailsView: UIView {
     
     // MARK:- Static Function
     static func initFromNib() -> PlayerDetailsView? {
-        return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as? PlayerDetailsView
+        return Bundle.loadNib(PlayerDetailsView.self, owner: self)
     }
     
     // MARK:- Properties
@@ -86,10 +84,11 @@ class PlayerDetailsView: UIView {
             self.configure(with: viewModel)
         }
     }
+    var delegate: PlayerDetailsViewDelegate?
     
     // MARK:- Private Properties
     private var viewModel: PlayerDetailsViewModel!
-    private var animationState: AnimationState = .shrink {
+    private var animationState: ImageViewAnimationstate = .shrink {
         didSet {
             animateImageView(transform: animationState.imageViewTransform)
         }
@@ -162,9 +161,7 @@ class PlayerDetailsView: UIView {
     
     // MARK:- Actions
     @IBAction func dismiss(_ sender: UIButton) {
-        
-        guard let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
-        tabBarController.minimizePlayerDetails()
+        delegate?.minimizePlayerDetails()
     }
     
     @IBAction func handleSliderTimeChanged(_ sender: UISlider) {
@@ -218,16 +215,16 @@ class PlayerDetailsView: UIView {
     
     // MARK:- Gestures
     func setUpGestures() {
+        
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         miniPlayerView.addGestureRecognizer(panGesture!)
-        
         maximizedStackview.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     }
     
     /// Gesture actions
     @objc func handleTapMaximize() {
-        UIApplication.mainTabBarController?.maximizePlayerDetails()
+        delegate?.maximizePlayerDetails(with: nil)
     }
     
     @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
@@ -250,8 +247,8 @@ class PlayerDetailsView: UIView {
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 07, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.maximizedStackview.transform = .identity
-                if translation.y > 75 {
-                    UIApplication.mainTabBarController?.minimizePlayerDetails()
+                if self.viewModel.dismisalPanLimitReached(from: translation.y) {
+                    self.delegate?.minimizePlayerDetails()
                 }
             })
         }
@@ -259,16 +256,16 @@ class PlayerDetailsView: UIView {
     
     /// Helper Methods for pan gesture states
     func handleBegan(gesture: UIPanGestureRecognizer) {
-        ///
+        /// Do nothing for now
     }
     
     func handleChanged(gesture: UIPanGestureRecognizer) {
         
         let translation = gesture.translation(in: self.superview)
         self.transform = CGAffineTransform(translationX: 0, y: translation.y)
-        /// 200 is the y coordinate where the alpha will be complete changed
-        self.miniPlayerView.alpha = 1 + translation.y / 200
-        self.maximizedStackview.alpha = -translation.y / 200
+        let alphas = self.viewModel.getAlphasForViewsWhenGestureChange(from: translation.y)
+        self.miniPlayerView.alpha = alphas.mimizedAlpha
+        self.maximizedStackview.alpha = alphas.maximizedAlpha
     }
     
     func handleEnded(gesture: UIPanGestureRecognizer) {
@@ -278,9 +275,8 @@ class PlayerDetailsView: UIView {
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 07, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.transform = .identity
-            
-            if translation.y < -200 || velocity.y < -500 {
-                UIApplication.mainTabBarController?.maximizePlayerDetails()
+            if self.viewModel.didLimitReached(with: translation.y, or: velocity.y) {
+                self.delegate?.maximizePlayerDetails(with: nil)
             } else {
                 self.miniPlayerView.alpha = 1
                 self.maximizedStackview.alpha = 0

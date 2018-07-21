@@ -26,9 +26,17 @@ extension Reusable where Self: UICollectionViewCell {
     }
 }
 
+// MARK: - Uiview
+extension Reusable where Self: UIView {
+    static var reuseIdentifier: String {
+        return String(describing: self)
+    }
+}
+
 //MARK: elements conforming to Reusable
-extension UICollectionViewCell: Reusable {}
-extension UITableViewCell: Reusable {}
+//extension UICollectionViewCell: Reusable {}
+//extension UITableViewCell: Reusable {}
+extension UIView: Reusable {}
 
 //MARK: extending Collections
 extension UITableView {
@@ -70,3 +78,16 @@ extension UICollectionView {
         return cell
     }
 }
+
+extension Bundle {
+    
+    static func loadNib<T: UIView>(_ :T.Type, owner: Any?, options: [AnyHashable : Any]? = nil) -> T {
+        return main.loadNibNamed(T.reuseIdentifier, owner: owner, options: options)?.first as! T
+    }
+}
+
+
+
+
+
+
