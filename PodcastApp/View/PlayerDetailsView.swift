@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AVKit
+import MediaPlayer
 
 /// Object that manages the animation state for the imageview
 enum ImageViewAnimationstate {
@@ -104,6 +105,8 @@ class PlayerDetailsView: UIView {
     // MARK:- View Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
+        setUpAudioSession()
+        setUpRemoteControl()
         observePlayerCurrentTime()
         observeBoundaryTime()
         setUpGestures()
@@ -117,11 +120,28 @@ class PlayerDetailsView: UIView {
     private func configure(with viewModel: PlayerDetailsViewModel) {
         
         self.viewModel = viewModel
+        
+        /// Lock screen
+        setUplNowPlayingInfo(with: viewModel)
+
         /// Max Player
         episodeTitleLabel.text = viewModel.episodeTitle
         authorLabel.text = viewModel.authorName
         if let url = viewModel.imageUrl {
-            podcastImageView.sd_setImage(with: url)
+            podcastImageView.sd_setImage(with: url) { image, _, _, _ in
+                
+                guard let image = image else { return }
+                /// lockscreen artwork getting the dict
+                var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+                
+                let arwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_) -> UIImage in
+                    return image
+                })
+                
+                nowPlayingInfo?[MPMediaItemPropertyArtwork] = arwork
+                /// writing on the dict
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            }
         }
         if let steramUrl = viewModel.streamUrl {
             self.playEpisode(with: steramUrl)
@@ -129,6 +149,48 @@ class PlayerDetailsView: UIView {
         /// Min Player
         miniPlayerViewTitleLabel.text = episodeTitleLabel.text
         miniplayerViewImageView.image = podcastImageView.image
+        
+    }
+    
+    private func setUplNowPlayingInfo(with viewModel: PlayerDetailsViewModel) {
+        
+        var nowPlayingInfo = [String: Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = viewModel.episodeTitle
+        nowPlayingInfo[MPMediaItemPropertyArtist] = viewModel.authorName
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    private func setUpAudioSession() {
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let err {
+            print("Failed to activate session with error \(err)")
+        }
+    }
+    
+    private func setUpRemoteControl() {
+        
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { _ in
+            self.playPause()
+            return .success
+        }
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget { _ in
+            self.playPause()
+            return .success
+        }
+        
+        commandCenter.togglePlayPauseCommand.isEnabled = true
+        commandCenter.togglePlayPauseCommand.addTarget { _ in
+            self.playPause()
+            return .success
+        }
     }
     
     fileprivate func observePlayerCurrentTime() {
@@ -138,8 +200,23 @@ class PlayerDetailsView: UIView {
             self?.currentTimeLabel.text = time.displayString
             let durationTime = self?.player.currentItem?.duration
             self?.remainingTimeLabel.text = durationTime?.displayString
+            self?.setUplLockScreenCurrentTime()
             self?.updateSlider()
         }
+    }
+    
+    private func setUplLockScreenCurrentTime() {
+        
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        guard let currentItem = player.currentItem else { return }
+        /// track time correctly
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+        
+        let durationInSeconds = currentItem.duration
+        nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = CMTimeGetSeconds(durationInSeconds)
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     private func updateSlider() {
@@ -191,12 +268,21 @@ class PlayerDetailsView: UIView {
     }
     
     @IBAction func handlePlayPause(_ sender: UIButton) {
+        playPause()
+    }
+    
+    private func playPause() {
+        
+        updatePlayPauseButton()
+        player.timeControlStatus == .paused ? player.play() : player.pause()
+        self.animationState = player.timeControlStatus == .paused ? .shrink : .normal
+    }
+    
+    private func updatePlayPauseButton() {
         
         let buttonImage = self.viewModel.playPauseImage(for: player.timeControlStatus)
         playPauseButton.setImage(buttonImage, for: .normal)
         miniPlayerPlayPauseButton.setImage(buttonImage, for: .normal)
-        player.timeControlStatus == .paused ? player.play() : player.pause()
-        self.animationState = player.timeControlStatus == .paused ? .shrink : .normal
     }
     
     private func playEpisode(with url: URL) {
@@ -285,7 +371,14 @@ class PlayerDetailsView: UIView {
     }
 }
 
+protocol Guarded {}
 
-
+extension Optional: Guarded {
+    
+    func guarded<T: ExpressibleByNilLiteral>(_ value: T?, completion: () -> ()?) {
+        guard let _ = value else { completion(); return }
+    }
+    
+}
 
 

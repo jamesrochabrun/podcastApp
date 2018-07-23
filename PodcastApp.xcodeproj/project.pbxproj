@@ -342,6 +342,11 @@
 					09BD723620BE5AE40011FEC8 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					09BD724D20BE5AE40011FEC8 = {
 						CreatedOnToolsVersion = 9.2;
