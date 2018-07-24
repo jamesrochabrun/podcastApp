@@ -43,3 +43,20 @@ class DownloadController: UITableViewController {
     }
 }
 
+// MARK:- UItableviewDelegate
+extension DownloadController {
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /// Launch episode player
+        let episode = self.tableDataSource?.object(at: indexPath)
+        UIApplication.mainTabBarController?.maximizePlayerDetails(with: episode)
+    }
+}
+
+
+
+
+
+
+
+

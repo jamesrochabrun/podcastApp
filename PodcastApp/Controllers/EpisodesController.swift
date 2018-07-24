@@ -145,6 +145,8 @@ extension EpisodesController {
         guard let episode = self.tableDataSource?.object(at: indexPath) else { return [] }
         let downloadAction = UITableViewRowAction(style: .normal, title: "Downloading") { (_, _) in
             UserDefaults.standard.download(episode: episode)
+            /// Download a podcast episode using Alamofire
+            APIService.shared.download(episode: episode)
         }
         return [downloadAction]
     }

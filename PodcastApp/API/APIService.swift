@@ -54,4 +54,50 @@ class APIService {
             }
         }
     }
+    
+    /// Downloading logic
+    func download(episode: Episode) {
+        
+        guard let streamUrl = episode.streamUrl else { return }
+        
+        /// Saving in file
+        let downloadReq = DownloadRequest.suggestedDownloadDestination()
+        
+        Alamofire.download(streamUrl, to: downloadReq).downloadProgress { progress in
+            print("pro \(progress.fractionCompleted)")
+            }.response { (response) in
+                
+                /// 1. getAll the downloaded episodes
+                var downloadedEpisodes = UserDefaults.standard.downloadedEpisodes()
+                
+                /// 2. get the index of the episode that want to download
+                guard let index = downloadedEpisodes.index(where: {
+                    $0.title == episode.title && $0.author == episode.author
+                }) else { return }
+                /// 3. set the file Url that we will use to access the episode
+                downloadedEpisodes[index].fileUrl = response.destinationURL?.absoluteString ?? "No provided"
+                do {
+                    
+                    /// 4. update the storage with the fileUrl property for that episode.
+                    let data = try JSONEncoder().encode(downloadedEpisodes)
+                    UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpisodeKey)
+                } catch let err {
+                    print("Error on encoding episode wit error = \(err)")
+                }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
