@@ -139,6 +139,15 @@ extension EpisodesController {
         dSource.isEmpty ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
         return dSource.isEmpty ? 200 : 0
     }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        guard let episode = self.tableDataSource?.object(at: indexPath) else { return [] }
+        let downloadAction = UITableViewRowAction(style: .normal, title: "Downloading") { (_, _) in
+            UserDefaults.standard.download(episode: episode)
+        }
+        return [downloadAction]
+    }
 }
 
 

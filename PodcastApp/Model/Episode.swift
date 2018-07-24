@@ -9,7 +9,7 @@
 import Foundation
 import FeedKit
 
-struct Episode {
+struct Episode: Codable { // better than NScoding
     
     var title: String?
     var description: String?
