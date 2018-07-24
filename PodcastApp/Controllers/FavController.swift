@@ -12,7 +12,7 @@ import UIKit
 class FavController: UICollectionViewController {
     
     // MARK:- Private properties
-    private var collectionDataSource: CollectionViewDataSource<FavoriteCell, Episode>?
+    private var collectionDataSource: CollectionViewDataSource<FavoriteCell, Podcast>?
     
     // MARK:- App Lifecycle
     override func viewDidLoad() {
@@ -20,20 +20,52 @@ class FavController: UICollectionViewController {
         setUpCollectionView()
     }
     
-    // MARK:- Set Up UI
-    private func setUpCollectionView() {
-        self.collectionView?.register(FavoriteCell.self)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpDataSource()
     }
     
-    private func setUpDataSource(with models: [Episode]) {
+    // MARK:- Set Up UI
+    private func setUpCollectionView() {
+        self.collectionView?.backgroundColor = .white
+        self.collectionView?.register(FavoriteCell.self)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handelLongPress))
+        self.collectionView?.addGestureRecognizer(longPress)
+    }
+    
+    private func setUpDataSource() {
         
-        collectionDataSource = CollectionViewDataSource(models: models) { cell, model in
-            //    let vModel = EpisodeCellViewModel(model: model)
-            //    cell.configure(viewModel: vModel)
+        let favoritePodcasts = UserDefaults.standard.savedPodcasts()
+        collectionDataSource = CollectionViewDataSource(models: favoritePodcasts) { cell, model in
+            let vm = FavoriteCellViewmodel(model)
+            cell.configure(with: vm)
             return cell
         }
         self.collectionView?.dataSource = collectionDataSource
         self.collectionView?.reloadData()
+    }
+    
+    // MARK:- Actions
+    @objc func handelLongPress(gesture: UILongPressGestureRecognizer) {
+        
+        let point = gesture.location(in: self.collectionView)
+        guard let selectedIndexPath = self.collectionView?.indexPathForItem(at: point) else { return }
+        let alertController = UIAlertController(title: "Remoce", message: "Podcast?", preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
+            self.updateDataFrom(indexPath: selectedIndexPath)
+
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+        }))
+        present(alertController, animated: true)
+    }
+    
+    private func updateDataFrom(indexPath: IndexPath) {
+        
+        self.collectionDataSource?.removeItem(at: indexPath)
+        self.collectionView?.performBatchUpdates({
+            self.collectionView?.deleteItems(at: [indexPath])
+        })
     }
 }
 

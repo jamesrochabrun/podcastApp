@@ -49,5 +49,9 @@ final class CollectionViewDataSource<V, T> : NSObject, UICollectionViewDataSourc
     func object(at indexPath: IndexPath) -> T {
         return self.models[indexPath.item]
     }
+    
+    func removeItem(at indexPath: IndexPath) {
+        self.models.remove(at: indexPath.item)
+    }
 }
 

@@ -16,6 +16,8 @@ import Foundation
 
 /// Decoding
 
+/// 1 check the coder method here...
+
 struct DecoEncodeKeys {
     
     static let trackName = "trackNameKey"
@@ -36,7 +38,7 @@ class Podcast: NSObject, Decodable, NSCoding {
         print("trying to transform Podcast in to data")
         aCoder.encode(trackName ?? "track Name", forKey: DecoEncodeKeys.trackName)
         aCoder.encode(artistName ?? "Artwork Name", forKey: DecoEncodeKeys.artistName)
-        aCoder.encode(artworkUrl600 ?? "artworkUrl600 ", forKey: DecoEncodeKeys.artworkUrl)
+        aCoder.encode(artworkUrl600 ?? "Artwork no provided", forKey: DecoEncodeKeys.artworkUrl)
 
     }
     
@@ -44,7 +46,7 @@ class Podcast: NSObject, Decodable, NSCoding {
         print("trying to transform data in to Podcast")
         self.trackName = aDecoder.decodeObject(forKey: DecoEncodeKeys.trackName) as? String
         self.artistName = aDecoder.decodeObject(forKey: DecoEncodeKeys.artistName) as? String
-        self.trackName = aDecoder.decodeObject(forKey: DecoEncodeKeys.artworkUrl) as? String
+        self.artworkUrl600 = aDecoder.decodeObject(forKey: DecoEncodeKeys.artworkUrl) as? String
 
     }
 }

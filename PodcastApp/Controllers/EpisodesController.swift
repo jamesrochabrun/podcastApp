@@ -27,8 +27,6 @@ class EpisodesController: UITableViewController {
         }
     }
     
-    private let favoritePodcastKey = "favPodKey"
-    
     // MARK:- Private properties
     private var tableDataSource: GenericTableDataSource<EpisodeCell, Episode>?
     
@@ -80,19 +78,25 @@ class EpisodesController: UITableViewController {
         
         guard let podcast = self.podcast else { return }
         
-        /// concert podcast in data
-        let podcastData = NSKeyedArchiver.archivedData(withRootObject: podcast)
-        UserDefaults.standard.set(podcastData, forKey: favoritePodcastKey)
-    
+        let savedPodcasts = UserDefaults.standard.savedPodcasts()
+
+        var listOfSavedPodcasts = savedPodcasts
+        listOfSavedPodcasts.append(podcast)
+        
+        /// Transform list of podcasts in to data
+        let podcastsData = NSKeyedArchiver.archivedData(withRootObject: listOfSavedPodcasts)
+        UserDefaults.standard.set(podcastsData, forKey: UserDefaults.favoritePodcastKey)
     }
     
     @objc func handleFetchSavedPodcast() {
         
-        guard let data = UserDefaults.standard.value(forKey: favoritePodcastKey) as? Data else { return }
-        guard let podcast = NSKeyedUnarchiver.unarchiveObject(with: data) as? Podcast else { return }
-        print("Podacast name and artist", podcast.artistName, podcast.trackName)
+        let savedPodcasts = UserDefaults.standard.savedPodcasts()
         
+        savedPodcasts.forEach {
+            print("Podcast name \($0.artistName!)")
+        }
     }
+    
 }
 
 
