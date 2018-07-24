@@ -17,6 +17,9 @@ struct Episode {
     var imageUrl: String?
     let author: String?
     let streamUrl: String?
+}
+
+extension Episode {
     
     init(item: RSSFeedItem) {
         self.title = item.title
@@ -28,5 +31,8 @@ struct Episode {
         self.streamUrl = item.enclosure?.attributes?.url
     }
 }
+
+
+
 
 

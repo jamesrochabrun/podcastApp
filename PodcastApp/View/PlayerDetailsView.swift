@@ -371,14 +371,5 @@ class PlayerDetailsView: UIView {
     }
 }
 
-protocol Guarded {}
-
-extension Optional: Guarded {
-    
-    func guarded<T: ExpressibleByNilLiteral>(_ value: T?, completion: () -> ()?) {
-        guard let _ = value else { completion(); return }
-    }
-    
-}
 
 

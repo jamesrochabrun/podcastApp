@@ -27,6 +27,8 @@ class EpisodesController: UITableViewController {
         }
     }
     
+    private let favoritePodcastKey = "favPodKey"
+    
     // MARK:- Private properties
     private var tableDataSource: GenericTableDataSource<EpisodeCell, Episode>?
     
@@ -34,6 +36,7 @@ class EpisodesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
+        setUpNavigationBarButtons()
     }
     
     // MARK:- Set Up UI
@@ -43,6 +46,13 @@ class EpisodesController: UITableViewController {
         APIService.shared.fetchEpisodes(feedUrl: feedUrl) { episodes in
             self.setUpDataSource(with: episodes)
         }
+    }
+    
+    private func setUpNavigationBarButtons() {
+        
+        let favButton = UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavorite))
+         let fetchButton = UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcast))
+        navigationItem.rightBarButtonItems = [favButton, fetchButton]
     }
     
     private func setUpTableView() {
@@ -64,7 +74,27 @@ class EpisodesController: UITableViewController {
     private func setUpNav(title: String) {
         self.title = title
     }
+    
+    // MARK:- Actions
+    @objc func handleSaveFavorite() {
+        
+        guard let podcast = self.podcast else { return }
+        
+        /// concert podcast in data
+        let podcastData = NSKeyedArchiver.archivedData(withRootObject: podcast)
+        UserDefaults.standard.set(podcastData, forKey: favoritePodcastKey)
+    
+    }
+    
+    @objc func handleFetchSavedPodcast() {
+        
+        guard let data = UserDefaults.standard.value(forKey: favoritePodcastKey) as? Data else { return }
+        guard let podcast = NSKeyedUnarchiver.unarchiveObject(with: data) as? Podcast else { return }
+        print("Podacast name and artist", podcast.artistName, podcast.trackName)
+        
+    }
 }
+
 
 // MARK:- UITableViewDelegate
 extension EpisodesController {
