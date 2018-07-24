@@ -47,11 +47,38 @@ class DownloadController: UITableViewController {
 extension DownloadController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /// Launch episode player
+        
         let episode = self.tableDataSource?.object(at: indexPath)
-        UIApplication.mainTabBarController?.maximizePlayerDetails(with: episode)
+        if let _ = episode?.fileUrl {
+            /// Launch episode player
+            UIApplication.mainTabBarController?.maximizePlayerDetails(with: episode)
+        } else {
+            /// let say that the download wasnt complete for any reason so the file url does not exist, lets alert the user
+            let alertController = UIAlertController(title: "File url not found", message: "Can not find local file, playing from streaming?", preferredStyle: .actionSheet)
+            let alertAction = UIAlertAction(title: "Yes", style: .default) { (_) in
+                UIApplication.mainTabBarController?.maximizePlayerDetails(with: episode)
+            }
+            let cancelAction = UIAlertAction(title: "No", style: .cancel) { (_) in }
+            alertController.addAction(alertAction)
+            alertController.addAction(cancelAction)
+            present(alertController, animated: true)
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

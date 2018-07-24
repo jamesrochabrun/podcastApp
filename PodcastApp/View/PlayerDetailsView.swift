@@ -143,13 +143,27 @@ class PlayerDetailsView: UIView {
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             }
         }
-        if let steramUrl = viewModel.streamUrl {
-            self.playEpisode(with: steramUrl)
+        /// Check if the episode has a stored file url
+        if let fileUrlString = episode.fileUrl,
+            let fileUrl = URL(string: fileUrlString),
+            let trueLocationUrl = self.handleTrueLocation(of: fileUrl) {
+            self.playEpisode(with: trueLocationUrl)
+        } else if let streamUrl = viewModel.streamUrl {
+            self.playEpisode(with: streamUrl)
         }
         /// Min Player
         miniPlayerViewTitleLabel.text = episodeTitleLabel.text
         miniplayerViewImageView.image = podcastImageView.image
+    }
+    
+    /// Finding the righ location URL in disk
+    private func handleTrueLocation(of url: URL) -> URL? {
         
+        /// Remember that the location of the episode changes every time the app runs
+        let fileUrl = url.lastPathComponent
+        guard var trueLocation = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        trueLocation.appendPathComponent(fileUrl)
+        return trueLocation
     }
     
     private func setUplNowPlayingInfo(with viewModel: PlayerDetailsViewModel) {
