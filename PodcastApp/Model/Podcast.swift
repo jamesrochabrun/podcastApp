@@ -23,6 +23,7 @@ struct DecoEncodeKeys {
     static let trackName = "trackNameKey"
     static let artistName = "artistNameKey"
     static let artworkUrl = "artworkUrl600Key"
+    static let feedUrl = "feedUrl"
 
 }
 
@@ -39,7 +40,7 @@ class Podcast: NSObject, Decodable, NSCoding {
         aCoder.encode(trackName ?? "track Name", forKey: DecoEncodeKeys.trackName)
         aCoder.encode(artistName ?? "Artwork Name", forKey: DecoEncodeKeys.artistName)
         aCoder.encode(artworkUrl600 ?? "Artwork no provided", forKey: DecoEncodeKeys.artworkUrl)
-
+        aCoder.encode(feedUrl ?? "feedUrl no provided", forKey: DecoEncodeKeys.feedUrl)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,7 +48,7 @@ class Podcast: NSObject, Decodable, NSCoding {
         self.trackName = aDecoder.decodeObject(forKey: DecoEncodeKeys.trackName) as? String
         self.artistName = aDecoder.decodeObject(forKey: DecoEncodeKeys.artistName) as? String
         self.artworkUrl600 = aDecoder.decodeObject(forKey: DecoEncodeKeys.artworkUrl) as? String
-
+        self.feedUrl = aDecoder.decodeObject(forKey: DecoEncodeKeys.feedUrl) as? String
     }
 }
 

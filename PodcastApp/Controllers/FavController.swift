@@ -23,6 +23,7 @@ class FavController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpDataSource()
+        UIApplication.mainTabBarController?.favoriteNav?.tabBarItem.badgeValue = nil
     }
     
     // MARK:- Set Up UI
@@ -62,9 +63,13 @@ class FavController: UICollectionViewController {
     
     private func updateDataFrom(indexPath: IndexPath) {
         
+        if let podcastToRemove = self.collectionDataSource?.object(at: indexPath) {
+            UserDefaults.standard.removePodcast(podcastToRemove)
+        }
         self.collectionDataSource?.removeItem(at: indexPath)
         self.collectionView?.performBatchUpdates({
             self.collectionView?.deleteItems(at: [indexPath])
+            
         })
     }
 }
@@ -84,6 +89,16 @@ extension FavController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 16
+    }
+}
+
+// MARK:- UICollectionViewDelegate
+extension FavController {
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let episodesController = EpisodesController()
+        episodesController.podcast = self.collectionDataSource?.object(at: indexPath)
+        navigationController?.pushViewController(episodesController, animated: true)
     }
 }
 

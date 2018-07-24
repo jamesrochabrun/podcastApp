@@ -18,8 +18,13 @@ extension UserDefaults {
         return listOfSavedPodcasts
     }
     
-    func removePodcast(at index: Int) {
+    func removePodcast(_ podcast: Podcast) {
         
-        
+        let podcasts = savedPodcasts()
+        let filteredPodcasts = podcasts.filter {
+            return $0.trackName != podcast.trackName && $0.artistName != podcast.artistName
+        }
+        let data = NSKeyedArchiver.archivedData(withRootObject: filteredPodcasts)
+        UserDefaults.standard.set(data, forKey: UserDefaults.favoritePodcastKey)
     }
 }
